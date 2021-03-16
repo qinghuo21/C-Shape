@@ -1,2 +1,2 @@
-# C-
+# C-Shape
 study in leetcode
