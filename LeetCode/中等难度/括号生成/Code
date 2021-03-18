@@ -1,0 +1,44 @@
+题目：
+数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+
+示例 1：
+
+输入：n = 3
+输出：["((()))","(()())","(())()","()(())","()()()"]
+示例 2：
+
+输入：n = 1
+输出：["()"]
+
+
+
+public class Solution {
+            public  IList<string> GenerateParenthesis(int n)
+        {
+            List<string> list = new List<string>();
+            Countfunction(n, n, 0, "", list);
+            return list;
+        }
+        public static int Countfunction(int leftnumber,int rightnumber, int EffectiveCount,string temp,List<string> list)
+        {
+            if (leftnumber < 0 || rightnumber < 0)
+                return 0;
+            if (EffectiveCount == 0 && leftnumber == 0 && rightnumber == 0)
+            {
+                if(!list.Contains(temp))
+                    list.Add(temp);
+                return 1;
+            }
+            if (EffectiveCount == 0 && leftnumber != 0)
+            {
+                temp = temp + "(";
+                EffectiveCount++;
+                leftnumber--;
+            }
+            Countfunction(leftnumber-1, rightnumber, EffectiveCount+1, temp + "(", list);
+            Countfunction(leftnumber, rightnumber-1, EffectiveCount-1, temp + ")", list);
+
+
+            return 0;
+        }
+}
