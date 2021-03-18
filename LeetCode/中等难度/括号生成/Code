@@ -13,14 +13,15 @@
 
 
 public class Solution {
-            public  IList<string> GenerateParenthesis(int n)
-        {
+            public  IList<string> GenerateParenthesis(int n) //主函数调用
+            {
             List<string> list = new List<string>();
             Countfunction(n, n, 0, "", list);
             return list;
-        }
+            }
         public static int Countfunction(int leftnumber,int rightnumber, int EffectiveCount,string temp,List<string> list)
         {
+            ///跳出条件
             if (leftnumber < 0 || rightnumber < 0)
                 return 0;
             if (EffectiveCount == 0 && leftnumber == 0 && rightnumber == 0)
@@ -29,12 +30,14 @@ public class Solution {
                     list.Add(temp);
                 return 1;
             }
+            ///逻辑调整
             if (EffectiveCount == 0 && leftnumber != 0)
             {
                 temp = temp + "(";
                 EffectiveCount++;
                 leftnumber--;
             }
+            ///递归遍历  二叉树方法
             Countfunction(leftnumber-1, rightnumber, EffectiveCount+1, temp + "(", list);
             Countfunction(leftnumber, rightnumber-1, EffectiveCount-1, temp + ")", list);
 
