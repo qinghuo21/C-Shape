@@ -1,0 +1,87 @@
+题目：
+判断一个 9x9 的数独是否有效。只需要根据以下规则，验证已经填入的数字是否有效即可。
+
+数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
+
+示例 1:
+
+输入:
+[
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+输出: true
+
+解题思路：
+
+主要是通过类似Java TreeMap排异的原理然后判断list中的元素个数来判断对错
+代码：
+
+public class Solution {
+    public bool IsValidSudoku(char[][] board) 
+    {
+            int x=0, y=0;
+            int l1Symbol=0,l2Symbol=0,l3Symbol=0;
+            List<char> list1 = new List<char>();
+            List<char> list2 = new List<char>();
+            List<char> list3 = new List<char>();
+        
+            for(int i = 0; i< 9; i++)
+            {
+                y=y+3;
+                x=(i/3)*3;
+                if (i%3==0)
+                    y=0;
+                
+                for(int j = 0; j < 9; j++)
+                {
+                    if (j % 3 == 0 && j>0)
+                    {
+                        x++;
+                        y=y-3;
+                    } 
+
+                    function(ref list1,board[j][i],ref l1Symbol);
+                    function(ref list2,board[i][j],ref l2Symbol);
+                    function(ref list3,board[x][y],ref l3Symbol);
+                    y++;
+  
+                }
+                y=y-3;
+                
+                
+                //检查
+                if ((list3.Count+l3Symbol)<9 || (list1.Count+l1Symbol) < 9 || (list2.Count+l2Symbol)<9 )
+                    return false;
+                list1.Clear();
+                list2.Clear();
+                list3.Clear();
+                l1Symbol=l2Symbol=l3Symbol=0;
+            }
+
+                 return true;
+    }
+           
+    
+    
+    public static void function(ref List<char> list ,char temp ,ref int Symbol){
+        if (!list.Contains(temp))
+        {
+           if(temp=='.')
+           {    
+               Symbol++;
+           }
+           else
+              list.Add(temp);
+        }
+    }
+}
