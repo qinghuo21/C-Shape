@@ -1,0 +1,134 @@
+题目：
+给你一个整数数组 nums ，数组中共有 n 个整数。132 模式的子序列 由三个整数 nums[i]、nums[j] 和 nums[k] 组成，并同时满足：i < j < k 和 nums[i] < nums[k] < nums[j] 。
+
+如果 nums 中存在 132 模式的子序列 ，返回 true ；否则，返回 false 。
+
+ 
+
+进阶：很容易想到时间复杂度为 O(n^2) 的解决方案，你可以设计一个时间复杂度为 O(n logn) 或 O(n) 的解决方案吗？
+
+ 
+
+示例 1：
+
+输入：nums = [1,2,3,4]
+输出：false
+解释：序列中不存在 132 模式的子序列。
+示例 2：
+
+输入：nums = [3,1,4,2]
+输出：true
+解释：序列中有 1 个 132 模式的子序列： [1, 4, 2] 。
+示例 3：
+
+输入：nums = [-1,3,2,0]
+输出：true
+解释：序列中有 3 个 132 模式的的子序列：[-1, 3, 2]、[-1, 3, 0] 和 [-1, 2, 0] 。
+ 
+
+提示：
+
+n == nums.length
+1 <= n <= 104
+-109 <= nums[i] <= 109
+
+
+### 解题思路
+优化了数据之后，对最大值（最大值找不到换第二等等）进行类似二分法的查询，找到后则返回true。
+### 代码
+
+```csharp
+public class Solution {
+    public bool Find132pattern(int[] nums) {
+            //筛选去掉临近重复的项，对数据进行整理
+            List<int> list = new List<int>();
+            for(int i = 0; i < nums.Length; i++)
+            {
+                if(i==0||list[list.Count-1]!=nums[i])
+                    list.Add(nums[i]);
+            }
+            nums = list.ToArray();
+            list.Clear();
+            
+            //通过list方法筛选出不重复元素的递增序列
+            foreach (int item in nums)
+            {
+                if (!list.Contains(item))
+                    list.Add(item);
+            }
+            list.Sort();
+            
+            //将不可能达到132模式的数据直接判false
+            if (nums.Length < 3 || list.Count<3)
+            {
+                return false;
+            }
+            
+            //将list数组逆序遍历maxscan方法，找出132模式的可能
+            while (list.Count > 0)
+            {
+                if (maxscan(list[list.Count - 1], nums))
+                    return true;
+                list.RemoveAt(list.Count - 1);
+            }
+
+            return false;
+    }
+    public static bool maxscan(int i,int[] nums ) //本函数主要是为了找到导入的i最大值的下标
+        {
+            //此部分将最大值的下标都获得，可能不止一个
+            List<int> list = new List<int>();
+            int coordinate = 0;
+            foreach (int item in nums)
+            {
+                if (item == i)
+                    list.Add(coordinate);
+                coordinate++;
+            }
+            
+            //将所有最大值的下标交给listscan方法遍历，去寻找132模式的可能
+            foreach (int item in list)
+            {
+                if (listscan(item, nums))
+                    return true;
+            }
+            return false;
+        }
+        public static bool listscan(int coordinate, int[] nums)//此方法主要是通过下标锁定center，去通过类似二分法两头寻找left和right，再判断是否满足132模式
+        {
+            //对最大值的下标进行判断，防止数组超界
+            if (coordinate == 0 || coordinate == nums.Length)
+                return false;
+                
+            //变量初始化
+            int center = nums[coordinate],left=nums[coordinate],right= nums[coordinate];
+            int i= coordinate, j= coordinate;
+            i--; j++;
+            
+            //对left进行查找
+            while (i >= 0)
+            {
+                if (nums[i] < left)
+                    left = nums[i];
+                i--;
+            }
+            
+            //对right进行查找
+            while (j < nums.Length)
+            {
+                if(nums[j] < center)
+                {
+                    if(center == right ||  nums[j] > right)
+                        right = nums[j];
+                }
+                j++;
+            }
+            
+            //此处判断是否符合132模式
+            if (center > right && right > left)
+                return true;
+            else
+                return false;
+        }
+}
+```
