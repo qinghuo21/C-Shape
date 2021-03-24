@@ -97,7 +97,7 @@ public class Solution {
         public static bool listscan(int coordinate, int[] nums)//此方法主要是通过下标锁定center，去通过类似二分法两头寻找left和right，再判断是否满足132模式
         {
             //对最大值的下标进行判断，防止数组超界
-            if (coordinate == 0 || coordinate == nums.Length)
+            if (coordinate == 0 || coordinate == nums.Length-1)
                 return false;
                 
             //变量初始化
