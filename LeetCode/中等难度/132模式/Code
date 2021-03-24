@@ -54,7 +54,7 @@ public class Solution {
             list.Sort();
             
             //将不可能达到132模式的数据直接判false
-            if (nums.Length < 3 || list.Count<3)
+            if (list.Count<3)
             {
                 return false;
             }
