@@ -1,0 +1,89 @@
+题目：
+给你一个字符串 path ，表示指向某一文件或目录的 Unix 风格 绝对路径 （以 '/' 开头），请你将其转化为更加简洁的规范路径。
+
+在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。任意多个连续的斜杠（即，'//'）都被视为单个斜杠 '/' 。 对于此问题，任何其他格式的点（例如，'...'）均被视为文件/目录名称。
+
+请注意，返回的 规范路径 必须遵循下述格式：
+
+始终以斜杠 '/' 开头。
+两个目录名之间必须只有一个斜杠 '/' 。
+最后一个目录名（如果存在）不能 以 '/' 结尾。
+此外，路径仅包含从根目录到目标文件或目录的路径上的目录（即，不含 '.' 或 '..'）。
+返回简化后得到的 规范路径 。
+
+
+### 解题思路
+主要是对于..的解析，分清楚是哪一种情况。
+### 代码
+
+```csharp
+public class Solution {
+    public string SimplifyPath(string path) {
+            //为使得path最后一项符合循环条件
+            path+="/";
+            //初始化
+            List<string> list = new List<string>();
+            char[] char_path = path.ToCharArray();
+            int count_dot = 0;
+            string temp = "", result="";
+            //循环char[]
+            foreach (char item in char_path)
+            {
+                if (item.Equals('/')) //如果出现"/"
+                {
+                    if (!temp.Equals("")) //判断是否有路径字符串
+                    {
+                        if(count_dot!=0){ //判断尾部是否有"."的存在
+                        for(int i=0;i<count_dot;i++)
+                            temp+=".";
+                        count_dot=0;
+                        }
+                        list.Add(temp);
+                        temp = "";
+                    }
+                    else if (count_dot != 0)//判断是否含有 "." 并进行归类
+                    {
+                        if (count_dot == 1)
+                            count_dot=0;
+                        else if (count_dot == 2)
+                        {
+                            if(list.Count>0)
+                                list.RemoveAt(list.Count-1);
+                            count_dot = 0;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < count_dot; i++)
+                                temp += ".";
+                            list.Add(temp);
+                            temp = "";
+                            count_dot = 0;
+                        }
+                    }
+
+                }
+                else if (item.Equals('.')) //判断该item是否是一个 "." 
+                        count_dot++;
+
+                else //普通字母路径
+                {
+                    if(count_dot!=0){ //字母路径前是否存在 "."
+                        for(int i=0;i<count_dot;i++)
+                            temp+=".";
+                        count_dot=0;
+                    }
+                    temp += item;
+                }
+            }
+            foreach (string item in list) //为路径添加 "/"
+            {
+                result += "/";
+                result += item;
+            }
+            if (result.Equals("")) //如果在根目录，则为他添加 "/"
+            result = "/";
+
+            return result;
+    }
+}
+```
