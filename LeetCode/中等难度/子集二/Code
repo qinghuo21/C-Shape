@@ -1,0 +1,70 @@
+题目：
+给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+
+解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
+
+ 
+
+示例 1：
+
+输入：nums = [1,2,2]
+输出：[[],[1],[1,2],[1,2,2],[2],[2,2]]
+示例 2：
+
+输入：nums = [0]
+输出：[[],[0]]
+ 
+
+提示：
+
+1 <= nums.length <= 10
+-10 <= nums[i] <= 10
+
+解题思路
+整体与子集一相同，加上排序和重复判断。
+
+代码
+
+public class Solution {
+    public IList<IList<int>> SubsetsWithDup(int[] nums) {
+        Array.Sort(nums); //先将nums升序排序
+        List<int> list = new List<int>();
+        List<IList<int>> result = new List<IList<int>>();
+        scanlist(0);
+        return result;
+        void scanlist(int index)
+        {
+            if (index == nums.Length)
+            {
+                //与子集一不同点为该出对于list的子集先进行重复判断，然后再进行插入
+                bool temp = true;//重复判断的标志，如果最后为true则表示有不同元素，如果最后为false表示完全相同
+                foreach (var item in result)
+                {
+                    if(item.Count==list.Count)
+                    {
+                        temp=false;
+                        for (int i = 0; i < item.Count; i++)
+                        {
+                            if(item[i]!=list[i])
+                                temp=true;
+                        }
+                        if(temp==false)
+                            break;
+                    }
+                }
+                if(temp) //如果存在temp==false的情况，即没有不同的元素，即退出并不执行插入语句
+                    result.Add(new List<int>(list));
+                return;
+            }
+            list.Add(nums[index]);
+            scanlist(index + 1);
+            list.RemoveAt(list.Count - 1);
+            scanlist(index + 1);
+        }
+    }
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/subsets-ii/solution/zi-ji-er-zhong-fu-pan-duan-by-qing-huo-3-dg9o/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
