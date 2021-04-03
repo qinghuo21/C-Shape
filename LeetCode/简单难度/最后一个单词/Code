@@ -67,6 +67,18 @@ public class Solution {
     }
 }
 
+这是使用Trim的方法，但是效率没有提高，代码量减少。
+
+
+public class Solution {
+    public int LengthOfLastWord(string s) {
+            s=s.Trim();
+            string[] string_result = s.Split(" ");
+            char[] char_result = string_result[string_result.Length - 1].ToCharArray();
+            return char_result.Length;
+    }
+}
+
 作者：qing-huo-3
 链接：https://leetcode-cn.com/problems/length-of-last-word/solution/suan-fa-jian-dan-te-shu-qing-kuang-duo-y-3u2r/
 来源：力扣（LeetCode）
