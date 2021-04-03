@@ -1,0 +1,73 @@
+给你一个字符串 s，由若干单词组成，单词之间用空格隔开。返回字符串中最后一个单词的长度。如果不存在最后一个单词，请返回 0 。
+
+单词 是指仅由字母组成、不包含任何空格字符的最大子字符串。
+
+ 
+
+示例 1：
+
+输入：s = "Hello World"
+输出：5
+示例 2：
+
+输入：s = " "
+输出：0
+ 
+
+提示：
+
+1 <= s.length <= 104
+s 仅有英文字母和空格 ' ' 组成
+
+解题思路
+特殊情况如下： "a "," ","a b ".基本通过这些例子就行了。
+
+代码
+
+public class Solution {
+    public int LengthOfLastWord(string s) {
+            string[] string_result = s.Split(" "); //分割
+            List<string> list = new List<string>();
+            foreach (var item in string_result) //放到list里面
+            {
+                list.Add(item);
+            }
+            while(list.Count>0) //去掉最后一个单词后面所有的" "，会遇到特殊情况只有空格
+            {
+                if (list[list.Count - 1].Equals(""))
+                    list.RemoveAt(list.Count-1);
+                else
+                    break;
+            }
+            if(list.Count==0) //检测是否只有空格
+                return 0;
+            char[] char_result = list[list.Count-1].ToCharArray(); //拿到最后一个单词
+            int result = char_result.Length;
+            
+            return result;
+    }
+}
+这是又写的简单版，但是他们速度的话上面的快，内存一样。这个版本直接从尾巴找起，先不看空格，遇到单词后再次遇到空格直接return。
+
+
+public class Solution {
+    public int LengthOfLastWord(string s) {
+        int count = 0;
+        char[] temp = s.ToCharArray();
+        for (int i = temp.Length-1; i >= 0 ; i--)
+        {
+            if (temp[i] != ' ')
+                count++;
+            else if (temp[i] == ' ' && count == 0)
+                ;
+            else
+                return count;
+        }
+        return count;
+    }
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/length-of-last-word/solution/suan-fa-jian-dan-te-shu-qing-kuang-duo-y-3u2r/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
