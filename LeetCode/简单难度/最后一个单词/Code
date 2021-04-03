@@ -67,7 +67,7 @@ public class Solution {
     }
 }
 
-这是使用Trim的方法，但是效率没有提高，代码量减少。
+这是使用Trim的方法，但是速度最慢，但代码量减少。
 
 
 public class Solution {
