@@ -1,0 +1,53 @@
+题目：
+
+给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
+
+设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+
+注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+
+ 
+
+示例 1:
+
+输入: [7,1,5,3,6,4]
+输出: 7
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
+     随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6-3 = 3 。
+
+
+
+贪心算法
+
+解题思路
+基于买卖股票1增强的贪心算法，主要区别是这个可以多次抛售，我们当赚少钱了直接抛售，可以换取更高的利润，具体注释如下
+
+代码
+
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        int result = 0, min = prices[0],temp,Sum=0;
+        foreach (var item in prices)
+        {
+            temp = item - min;
+            if (temp < result ) //因为这次卖出的钱少于上次，可以卖掉以前的股票买这个
+            {
+                Sum += result; //卖掉股票
+                result = 0;    
+                min = item;    //买了新股票
+            }
+            else if (temp > 0 && temp > result)  //如果我赚钱了而且比我之前赚得多
+                result = temp;
+            else if (temp < 0) //如果出现了比我之前还便宜的股票，我假设我这时候才买，对比之前
+                min = temp;
+        }
+        if(result!=0) //如果没有的买了，就最后一天抛售掉
+            Sum+=result;
+        return Sum;
+    }
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/solution/tan-xin-suan-fa-by-qing-huo-3-4emi/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
