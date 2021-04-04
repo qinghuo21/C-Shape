@@ -1,0 +1,27 @@
+题目：
+给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+
+
+解题思路
+利用list.Contains排异就可以找到只有一个的那个
+
+代码
+
+public class Solution {
+    public int SingleNumber(int[] nums) {
+        List<int> list = new List<int>();
+        foreach (var item in nums)
+        {
+            if (!list.Contains(item))
+                list.Add(item);
+            else
+                list.Remove(item);
+        }
+        return list[0];
+    }
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/single-number/solution/listcontains-by-qing-huo-3-lmco/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
