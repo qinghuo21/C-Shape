@@ -1,0 +1,60 @@
+题目：
+森林中，每个兔子都有颜色。其中一些兔子（可能是全部）告诉你还有多少其他的兔子和自己有相同的颜色。我们将这些回答放在 answers 数组里。
+
+返回森林中兔子的最少数量。
+
+示例:
+输入: answers = [1, 1, 2]
+输出: 5
+解释:
+两只回答了 "1" 的兔子可能有相同的颜色，设为红色。
+之后回答了 "2" 的兔子不会是红色，否则他们的回答会相互矛盾。
+设回答了 "2" 的兔子为蓝色。
+此外，森林中还应有另外 2 只蓝色兔子的回答没有包含在数组中。
+因此森林中兔子的最少数量是 5: 3 只回答的和 2 只没有回答的。
+
+输入: answers = [10, 10, 10]
+输出: 11
+
+输入: answers = []
+输出: 0
+说明:
+
+answers 的长度最大为1000。
+answers[i] 是在 [0, 999] 范围内的整数。
+
+
+
+解题思路
+执行用时：112 ms, 在所有 C# 提交中击败了50.00%的用户内存消耗：24.5 MB, 在所有 C# 提交中击败了100.00%的用户。
+// 如果为0, 则默认+1
+// 如果>=1, 如[1,2,1,2,1,2,3] 1 可以去掉另一个1 2可以去掉2个2 3可以去掉3个3，以此类推，去掉的项不增加。
+// result=(1+1)+(2+1)+0+0+(1+1)+0+(3+1)=11
+
+代码
+
+public class Solution {
+    public int NumRabbits(int[] answers) {
+        int result = 0, temp = 0, tempnumber=0;
+        Array.Sort(answers);
+        foreach (var item in answers)
+        {
+            if(temp!=item || tempnumber==0) // 包含3个1这种情况 result+=(1+1)+0+(1+1);
+            {
+                temp = item;
+                tempnumber = item;
+                result += item + 1;
+            }
+            else //tempnumber>0 && temp=item
+            {
+                tempnumber--;
+            }
+        }
+        return result;
+    }
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/rabbits-in-forest/solution/jie-ti-si-lu-yao-kao-lu-mei-ge-yuan-su-d-qtkh/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
