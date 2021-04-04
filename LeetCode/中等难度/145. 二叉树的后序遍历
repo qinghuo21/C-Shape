@@ -1,0 +1,47 @@
+题目：
+给定一个二叉树，返回它的 后序 遍历。
+
+解题思路
+详情在注解，主要要了解后序遍历是先左后右最后根
+
+代码
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public IList<int> PostorderTraversal(TreeNode root) {
+        List<int> list = new List<int>();
+        function(root);
+        return list;
+        void function(TreeNode root)
+        {
+            if (root == null)
+                return;
+            if (root.left == null)
+            {
+                function(root.right);//在左边节点不存在的情况下查找右边节点
+                list.Add(root.val);//在找不到左边 右边已完成的情况下插入自身
+                return;
+            }
+            function(root.left); //查找root左边节点
+            function(root.right);//查找root右边节点
+            list.Add(root.val);  //插入root自身
+        }
+    }
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/di-gui-hou-xu-bian-li-by-qing-huo-3-4m27/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
