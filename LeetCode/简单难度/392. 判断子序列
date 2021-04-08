@@ -1,0 +1,90 @@
+题目：
+
+给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
+
+字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
+
+进阶：
+
+如果有大量输入的 S，称作 S1, S2, ... , Sk 其中 k >= 10亿，你需要依次检查它们是否为 T 的子序列。在这种情况下，你会怎样改变代码？
+
+致谢：
+
+特别感谢 @pbrother 添加此问题并且创建所有测试用例。
+
+ 
+
+示例 1：
+
+输入：s = "abc", t = "ahbgdc"
+输出：true
+示例 2：
+
+输入：s = "axc", t = "ahbgdc"
+输出：false
+ 
+
+提示：
+
+0 <= s.length <= 100
+0 <= t.length <= 10^4
+两个字符串都只由小写字符组成。
+
+
+解题思路
+利用数组下标是否超界来进行确定是否为子序列
+
+代码
+
+public class Solution {
+    public bool IsSubsequence(string s, string t) {
+        char[] char_s = s.ToCharArray();
+        char[] char_t = t.ToCharArray();
+        int char_s_index = 0;
+        if (s.Equals(t) || s.Length == 0)
+            return true;
+        else if (t.Length<s.Length)
+            return false;
+        foreach (var item in char_t)
+        {
+            if (item == char_s[char_s_index])
+                char_s_index++;
+            if (char_s_index == char_s.Length)
+                return true;
+        }
+        return false;
+    }
+}
+
+解题思路
+动态规划
+
+代码
+
+public class Solution {
+    public bool IsSubsequence(string s, string t) {
+        char[] char_s = s.ToCharArray();
+        char[] char_t = t.ToCharArray();
+        int[] dp = new int[t.Length + 1];
+        if (s.Equals(t) || s.Length == 0)
+            return true;
+        else if (s.Length>t.Length)
+            return false;
+        dp[0] = 0;
+        for (int i = 0; i < t.Length; i++)
+        {
+            if (char_t[i] == char_s[dp[i]])
+                dp[i + 1] = dp[i] + 1;
+            else
+                dp[i + 1] = dp[i];
+            if (dp[i+1] == s.Length)
+                return true;
+        }
+        return false;
+    }
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/is-subsequence/solution/yi-wei-dong-tai-gui-ge-by-qing-huo-3-w2xk/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
