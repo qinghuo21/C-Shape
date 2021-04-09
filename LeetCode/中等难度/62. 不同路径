@@ -1,0 +1,65 @@
+题目：
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+
+问总共有多少条不同的路径？
+解题思路
+执行用时：44 ms, 在所有 C# 提交中击败了89.41%的用户内存消耗：14.6 MB, 在所有 C# 提交中击败了98.82%的用户。
+用递归搞了半天原来是个数学题。。。
+还记得杨辉三角吗？就是那个类型的题目，具体看注解。
+左与上相加即自身。
+
+代码
+
+        // 1 1 1 1 1
+        // 1 2 3 4 5
+        // 1 3 6 10 15
+        // 1 4 10 20 35
+        // 1 5 15 35 70
+public class Solution {
+    public int UniquePaths(int m, int n) {
+        int[,] Maze = new int[m, n];
+        for (int i = 0; i < m; i++)
+        {
+            Maze[i, 0] = 1;
+        }
+        for (int i = 0; i < n; i++)
+        {
+            Maze[0, i] = 1;
+        }
+        for (int i = 1; i < m; i++)
+        {
+            for (int j = 1; j < n; j++)
+            {
+                Maze[i, j] = Maze[i - 1, j] + Maze[i, j - 1];
+            }
+        }
+        return Maze[m-1,n-1];
+    }
+}
+
+
+递归解法，超时但是好理解递归
+
+
+int[,] Maze = new int[m, n];
+int Finish = 0;
+Maze[m - 1, n - 1] = 2;//终点
+Find(0, 0);
+return Finish;
+void Find(int m_index, int n_index)
+{
+    if (Maze[m_index, n_index] == 2 || m - 1 == m_index || n - 1 == n_index)
+    {
+        Finish++;
+        return;
+    }
+    Find(m_index + 1, n_index);
+    Find(m_index, n_index + 1);
+}
+
+作者：qing-huo-3
+链接：https://leetcode-cn.com/problems/unique-paths/solution/yang-hui-san-jiao-ti-xing-by-qing-huo-3-t44q/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
