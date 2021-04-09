@@ -1,0 +1,25 @@
+题目：
+给你一个整数 n ，请你判断 n 是否为 丑数 。如果是，返回 true ；否则，返回 false 。
+
+丑数 就是只包含质因数 2、3 和/或 5 的正整数。
+
+解题思路：
+这是一道逻辑题，如果含有别的质因数则将 2、3、5 除去后该质因数会被留下，所以只需要看去除2、3、5后的质因数即可。
+
+
+代码：
+public class Solution {
+    public bool IsUgly(int n) {
+        if (n <1)
+            return false;
+        while (n % 2 == 0)
+            n=n/2;
+        while (n % 3 == 0)
+            n=n/3;
+        while (n % 5 == 0)
+            n=n/5;   
+        if(n!=1)
+            return false;
+        return true;
+    }
+}
